@@ -1,5 +1,5 @@
 use chrono::NaiveDate;
-use crate::helpers::read_input;
+use crate::helpers::read_string_input;
 
 pub struct Customer {
     first_name: String,
@@ -10,9 +10,9 @@ pub struct Customer {
 
 impl Customer {
     pub fn new() -> Self {
-        let first_name = read_input("Enter your first name:");
-        let last_name = read_input("Enter your last name:");
-        let date = read_input("Enter today's date (DD/MM/YYYY):");
+        let first_name = read_string_input("Enter your first name:");
+        let last_name = read_string_input("Enter your last name:");
+        let date = read_string_input("Enter today's date (DD/MM/YYYY):");
         let date_str: &str = &date;
 
         let date = match NaiveDate::parse_from_str(date_str.trim(), "%d/%m/%Y") {
