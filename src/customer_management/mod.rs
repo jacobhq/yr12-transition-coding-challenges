@@ -1,5 +1,5 @@
-use text_io::read;
 use chrono::NaiveDate;
+use crate::helpers::read_input;
 
 pub struct Customer {
     first_name: String,
@@ -10,12 +10,9 @@ pub struct Customer {
 
 impl Customer {
     pub fn new() -> Self {
-        println!("Enter your first name:");
-        let first_name: String = read!("{}\n");
-        println!("Enter your last name:");
-        let last_name: String = read!("{}\n");
-        println!("Enter today's date (DD/MM/YYYY):");
-        let date: String = read!("{}\n");
+        let first_name = read_input("Enter your first name:");
+        let last_name = read_input("Enter your last name:");
+        let date = read_input("Enter today's date (DD/MM/YYYY):");
         let date_str: &str = &date;
 
         let date = match NaiveDate::parse_from_str(date_str.trim(), "%d/%m/%Y") {
@@ -40,5 +37,28 @@ impl Customer {
         let len_f_name = first_name.len();
         
         format!("{}{}{}{}", formatted_date, three_letters_last_name, first_f_name, len_f_name)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn normal() {
+        let first_name = "John";
+        let last_name = "Doe";
+        let date = NaiveDate::parse_from_str("25/08/2024", "%d/%m/%Y").unwrap();
+        
+        assert_eq!(Customer::generate_customer_id(first_name, last_name, date), "20240825DOEJ4")
+    }
+
+    #[test]
+    fn short_names() {
+        let first_name = "J";
+        let last_name = "D";
+        let date = NaiveDate::parse_from_str("25/08/2024", "%d/%m/%Y").unwrap();
+
+        assert_eq!(Customer::generate_customer_id(first_name, last_name, date), "20240825DJ1")
     }
 }
